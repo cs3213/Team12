@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>coincide - Concept Oriented INtuitive Canvas IDE</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" href="{{STATIC_URL}}/img/favicon.ico">
+  <link rel="apple-touch-icon" href="{{STATIC_URL}}/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="{{STATIC_URL}}/scripts/libs/bootstrap/3.2.0/css/bootstrap.css">
+  <link rel="stylesheet" href="{{STATIC_URL}}/scripts/libs/sweetalert-master/sweet-alert.css">
+  <link rel="stylesheet" href="{{STATIC_URL}}/css/style.css?v=2">
+  <link rel="stylesheet" href="{{STATIC_URL}}/scripts/libs/font-awesome-4.2.0/css/font-awesome.min.css">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <script data-main="{{STATIC_URL}}/scripts/main" src="{{STATIC_URL}}/scripts/libs/requirejs/2.1.15/require.js"></script>
+</head>
+<body>
+  <h1 style="text-align: center">Concept Oriented INtuitive Canvas IDE</h1>
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header"> 
+        <a class="navbar-brand" href="#">coincide</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">File<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a id = "newProgram" href="#">New..</a></li>
+              <li><a id = "saveProgram" href="#">Save..</a></li>
+            </ul>
+          </li>
+          {% if user and not user.is_anonymous %}
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Saved Programs<span class="caret"></span></a>
+            <ul id="myProgramList" class="dropdown-menu" role="menu">
+              {% for program in programs %}
+              <li>
+                <a style="display: inline-block" class="loadProgram" href="#" value = {{ program.id }} >{{ program.id }}</a>
+
+                <a class="program-delete-link" href="#" style="padding-left: 0; padding-right: 30px;">
+                  <img src="static/img/icon_delete.png" alt="">
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </li>
+          {% endif %}
+          <li>
+            <a id="run-button" href="#"><i class="fa fa-youtube-play fa-2x"></i></a>
+          </li>
+          <li>
+            <a id= "stop-button"><i class="fa fa-stop fa-2x"></i></a>
+          </li>
+          <li>
+            <a id = "musicControl"><i class="fa fa-music fa-2x"></i></a>
+          </li>
+          <li>    
+          <!--audio id= "bgSound" autoplay="autoplay" preload="auto" loop="loop">   
+            <source src="static/audio/bg.mp3" type="audio/mpeg"/>
+            <embed src="static/audio/bg.mp3" autostart="true" loop="true"
+          width="2" height="0">
+          </embed>
+         </audio-->
+         
+         <audio id= "bgSound" loop="loop" autoplay= "autoplay">   
+            <source src="static/audio/bg.mp3" type="audio/mpeg"/>
+          </embed>
+         </audio>
+
+        <audio id= "clockSound">   
+            <source src="static/audio/clock3.wav" type="audio/wav"/>
+         </audio>
+
+          </li>
+
+          <li>
+            <a id ="lastmodifiedId" value = {{ lastModifiedId }} > Current Program: {{ lastModifiedId }} </a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            {% if user and not user.is_anonymous %}
+            <p style="padding-bottom: 5px; padding-top: 5px;">
+              <!-- <a>{{ user.get_full_name|default:user.username }}, </a> -->
+              <!--img id= "profile" src ="http://graph.facebook.com/bimlesh.wadhwa/picture" style="border-radius:50%; width:40px; padding-bottom: 0;display:none"-->
+              <a id="userEmail" >{{ user.email }}</a>
+              <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
+            </p>
+            {% else %}
+            <p style="padding-bottom: 15px; padding-top: 15px;">
+              <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
+            </p>
+            {% endif %}
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav> 
+</body>
+</html>
